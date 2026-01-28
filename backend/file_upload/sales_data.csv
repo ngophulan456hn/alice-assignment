@@ -1,0 +1,19 @@
+Month,Product,Units Sold,Revenue,Region
+January,ACME Cloud Suite,45,112500,North America
+January,ACME Analytics,32,48000,North America
+January,ACME Connect,78,23400,North America
+February,ACME Cloud Suite,52,130000,North America
+February,ACME Analytics,41,61500,Europe
+February,ACME Connect,95,28500,Europe
+March,ACME Cloud Suite,61,152500,Europe
+March,ACME Analytics,38,57000,Asia Pacific
+March,ACME Connect,112,33600,Asia Pacific
+April,ACME Cloud Suite,58,145000,Asia Pacific
+April,ACME Analytics,45,67500,North America
+April,ACME Connect,89,26700,North America
+May,ACME Cloud Suite,67,167500,North America
+May,ACME Analytics,52,78000,Europe
+May,ACME Connect,134,40200,Europe
+June,ACME Cloud Suite,73,182500,Europe
+June,ACME Analytics,48,72000,Asia Pacific
+June,ACME Connect,156,46800,Asia Pacific
