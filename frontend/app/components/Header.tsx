@@ -1,6 +1,6 @@
 "use client";
 
-import { RefObject, useState } from "react";
+import { RefObject } from "react";
 
 interface HeaderProps {
   hasDocument: boolean;
@@ -25,8 +25,6 @@ export default function Header({
   onClearChat,
   onFileUpload,
 }: HeaderProps) {
-  const [showInfoTooltip, setShowInfoTooltip] = useState(false);
-
   return (
     <header className="navbar bg-base-200/50 backdrop-blur-sm border-b border-base-300">
       <div className="navbar-start">
@@ -55,25 +53,23 @@ export default function Header({
 
       <div className="navbar-end gap-2">
         {/* Health check button */}
-        <button
-          className="btn btn-ghost btn-circle"
-          onClick={onHealthCheck}
-          title="Check system health"
-        >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </button>
+        <div className="tooltip tooltip-bottom" data-tip="System Health">
+          <button className="btn btn-ghost btn-circle" onClick={onHealthCheck}>
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </button>
+        </div>
 
         {/* Document indicator */}
         {hasDocument && (
@@ -106,25 +102,23 @@ export default function Header({
 
         {/* Clear chat button */}
         {messagesCount > 0 && (
-          <button
-            onClick={onClearChat}
-            className="btn btn-ghost btn-circle"
-            title="Clear chat"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
-          </button>
+          <div className="tooltip tooltip-bottom" data-tip="Clear Chat">
+            <button className="btn btn-ghost btn-circle" onClick={onClearChat}>
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          </div>
         )}
 
         {/* Upload button */}
@@ -167,13 +161,8 @@ export default function Header({
         </label>
 
         {/* Info tooltip */}
-        <div className="dropdown dropdown-end">
-          <button
-            tabIndex={0}
-            className="btn btn-ghost btn-circle"
-            onMouseEnter={() => setShowInfoTooltip(true)}
-            onMouseLeave={() => setShowInfoTooltip(false)}
-          >
+        <div className="dropdown dropdown-end dropdown-hover">
+          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <svg
               className="w-5 h-5"
               fill="none"
@@ -187,23 +176,24 @@ export default function Header({
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-          </button>
-          {showInfoTooltip && (
-            <div className="dropdown-content card card-compact bg-base-200 shadow-xl w-64 p-2 z-50">
-              <div className="card-body">
-                <h3 className="card-title text-sm">Supported Files</h3>
-                <p className="text-xs text-base-content/70">
-                  Upload <span className="text-primary">PDF</span>,{" "}
-                  <span className="text-primary">CSV</span>, or{" "}
-                  <span className="text-primary">TXT</span> files.
-                </p>
-                <p className="text-xs text-base-content/50">
-                  The AI will use your uploaded document as context to provide
-                  more relevant answers.
-                </p>
-              </div>
+          </div>
+          <div
+            tabIndex={0}
+            className="dropdown-content card card-compact bg-base-200 shadow-xl w-64 p-2 z-50"
+          >
+            <div className="card-body">
+              <h3 className="card-title text-sm">Supported Files</h3>
+              <p className="text-xs text-base-content/70">
+                Upload <span className="text-primary">PDF</span>,{" "}
+                <span className="text-primary">CSV</span>, or{" "}
+                <span className="text-primary">TXT</span> files.
+              </p>
+              <p className="text-xs text-base-content/50">
+                The AI will use your uploaded document as context to provide
+                more relevant answers.
+              </p>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </header>

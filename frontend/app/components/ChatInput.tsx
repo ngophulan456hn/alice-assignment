@@ -31,7 +31,7 @@ export default function ChatInput({
   return (
     <footer className="bg-base-200/30 backdrop-blur-sm border-t border-base-300">
       <div className="max-w-3xl mx-auto px-4 py-4">
-        <div className="join w-full">
+        <div className="flex items-end gap-3">
           <div className="flex-1 relative">
             <textarea
               ref={inputRef}
@@ -41,16 +41,16 @@ export default function ChatInput({
               placeholder="Type your message..."
               disabled={isLoading}
               rows={1}
-              className="textarea textarea-bordered join-item w-full resize-none min-h-12 pr-16 focus:outline-none focus:border-primary"
+              className="textarea textarea-bordered w-full resize-none min-h-12 pr-12 focus:outline-none focus:border-primary"
             />
-            <kbd className="kbd kbd-sm absolute right-3 top-1/2 -translate-y-1/2 opacity-50">
+            <kbd className="kbd kbd-xs absolute right-3 bottom-3 opacity-50">
               ⏎
             </kbd>
           </div>
           <button
             onClick={onSend}
             disabled={!input.trim() || isLoading}
-            className="btn btn-primary join-item px-6"
+            className="btn btn-primary h-12 min-h-12 px-6"
           >
             {isLoading ? (
               <span className="loading loading-spinner loading-sm"></span>

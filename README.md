@@ -5,9 +5,10 @@ A full-stack AI chat application with document upload capabilities. Built with F
 ## Features
 
 - 💬 Chat with AI using Ollama (local LLM)
-- 📄 Upload PDF or CSV files for context-aware conversations
-- 🎨 Modern, responsive UI with Tailwind CSS
+- 📄 Upload PDF, CSV, or TXT files for context-aware conversations
+- 🎨 Modern, responsive UI with Tailwind CSS + daisyUI components
 - 🔄 Real-time chat with typing indicators
+- ✅ System health check for backend, Redis, and Ollama status
 
 ## Prerequisites
 
@@ -83,22 +84,23 @@ The frontend will be available at `http://localhost:3000`
 ### Uploading Documents
 
 - Click the "Upload PDF/CSV" button in the header
-- Select a PDF or CSV file
+- Select a PDF, TXT or CSV file
 - The document content will be used as context for your questions
 - A green indicator shows when a document is loaded
 - Click the × button to clear the document context
 
 ## API Endpoints
 
-| Endpoint                        | Method | Description                               |
-| ------------------------------- | ------ | ----------------------------------------- |
-| `/`                             | GET    | Health check                              |
-| `/chat`                         | POST   | Send a message and get AI response        |
-| `/upload`                       | POST   | Upload a PDF, CSV, or TXT file            |
-| `/document/status/{session_id}` | GET    | Check if a document is loaded for session |
-| `/document/{session_id}`        | DELETE | Clear the document context for session    |
-| `/history/{session_id}`         | GET    | Retrieve chat history for session         |
-| `/session/{session_id}`         | DELETE | Clear entire session (chat + document)    |
+| Endpoint                        | Method | Description                                  |
+| ------------------------------- | ------ | -------------------------------------------- |
+| `/`                             | GET    | Root endpoint with Redis status              |
+| `/health`                       | GET    | Health check (backend, Redis, Ollama, model) |
+| `/chat`                         | POST   | Send a message and get AI response           |
+| `/upload`                       | POST   | Upload a PDF, CSV, or TXT file               |
+| `/document/status/{session_id}` | GET    | Check if a document is loaded for session    |
+| `/document/{session_id}`        | DELETE | Clear the document context for session       |
+| `/history/{session_id}`         | GET    | Retrieve chat history for session            |
+| `/session/{session_id}`         | DELETE | Clear entire session (chat + document)       |
 
 ## Tech Stack & Architecture Decisions
 
@@ -131,6 +133,7 @@ Having worked with these frameworks on previous projects, I chose this stack bas
 | **React 19**     | UI library      | Most familiar frontend library from my experience. Component-based architecture makes the chat UI easy to reason about and extend.                                                                                                                                |
 | **TypeScript**   | Type safety     | Catches bugs early. After working on larger projects, I've learned that TypeScript's upfront cost pays off in maintainability.                                                                                                                                    |
 | **Tailwind CSS** | Styling         | Rapid prototyping without context-switching to separate CSS files. I've used it in several projects and find it faster than traditional CSS or CSS-in-JS for building UIs quickly.                                                                                |
+| **daisyUI**      | UI components   | Provides pre-built, themeable components (modals, buttons, chat bubbles, badges) that work seamlessly with Tailwind. Reduces custom CSS and ensures consistent design patterns across the app.                                                                    |
 
 **Trade-offs:**
 
@@ -157,19 +160,39 @@ Having worked with these frameworks on previous projects, I chose this stack bas
 ```
 alice-assignment/
 ├── backend/
-│   ├── main.py           # FastAPI application
-│   ├── redis_service.py  # Redis session management
-│   ├── requirements.txt  # Python dependencies
-│   └── venv/             # Virtual environment
+│   ├── main.py              # FastAPI application
+│   ├── redis_service.py     # Redis session management
+│   ├── requirements.txt     # Python dependencies
+│   ├── file_upload/         # Example files for testing
+│   │   ├── company_info.txt     # Company overview (TXT example)
+│   │   ├── sales_data.csv       # Sales data (CSV example)
+│   │   └── employee_handbook.pdf # Employee policies (PDF example)
+│   └── venv/                # Virtual environment
 ├── frontend/
 │   ├── app/
-│   │   ├── page.tsx     # Main chat page
-│   │   ├── layout.tsx   # Root layout
-│   │   └── globals.css  # Global styles
+│   │   ├── components/      # Reusable UI components
+│   │   │   ├── ChatInput.tsx    # Message input area
+│   │   │   ├── ChatMessages.tsx # Message list display
+│   │   │   ├── Header.tsx       # Navigation header
+│   │   │   ├── HealthModal.tsx  # System health modal
+│   │   │   └── Toast.tsx        # Toast notifications
+│   │   ├── page.tsx         # Main chat page
+│   │   ├── layout.tsx       # Root layout
+│   │   └── globals.css      # Global styles + daisyUI config
 │   ├── package.json
 │   └── ...
 └── README.md
 ```
+
+## Example Files for Testing
+
+The `backend/file_upload/` folder contains example files you can use to test the document upload feature:
+
+| File                    | Type | Description                                        | Sample Questions                                    |
+| ----------------------- | ---- | -------------------------------------------------- | --------------------------------------------------- |
+| `company_info.txt`      | TXT  | ACME Corp overview, products, and executives       | "Who is the CEO?", "What products does ACME offer?" |
+| `sales_data.csv`        | CSV  | 6 months of sales data by product and region       | "Total revenue in March?", "Best selling product?"  |
+| `employee_handbook.pdf` | PDF  | Employee policies (PTO, benefits, code of conduct) | "How many PTO days?", "What is the 401k match?"     |
 
 ## Improvement If I Have More Time
 
@@ -177,3 +200,8 @@ alice-assignment/
 - Implement RAG (Retrieval Augmented Generation) for better document querying
 - Add support for more file formats (DOCX, images with OCR)
 - Implement conversation branching and history navigation
+- Create Docker container for each service (Redis, Ollama, Backend, Frontend)
+- Deployment to cloud service or host website
+- Setup unit test or automation test on both frontend and backend
+- Add StreamingResponse for return message from model
+- Add logger to the backend to catch bug and monitor incoming request
